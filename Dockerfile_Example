@@ -1,0 +1,65 @@
+
+
+# Dockerfiles can be based off a BASE IMAGE
+FROM docker.io/library/python:3.9
+
+
+# container registry lets your team develop their own base images!
+# registries offer additional security to the images they host
+
+
+WORKDIR /app
+
+
+# pwd: /
+# cd: /
+# mkdir: /app
+# cd: /app
+
+
+# COPY [external location - docker context] [internal location]
+COPY . .
+
+
+# pre venv setup commands HERE
+RUN conda init bash
+
+
+# still set up a virtual environment, to provide the necessary resources to our application within the Docker container.
+RUN python3 -m venv venv
+
+
+# run a pip install to update requirements
+RUN venv/bin/python3 -m pip install -r requirements.txt
+
+
+# Dockerfiles are used to only BUILD the image
+# the image is used to create a container
+
+# RUN happend during the image build
+# CMD and ENTRYPOINT happen when the container is created from the image.
+
+CMD ["venv/bin/python3", "-m", "myApp.py"]
+
+
+$ docker build -t myApp/latest ./Dockerfile
+- Docker engine reads the dockerfile
+- Docker assembles a docker image, images are just a blueprint to create a container. It has no system memory or processor allocation to it.
+    - distribute to a container registry
+    - send to a K8s cluster
+    - deploy to vm
+
+$ docker run myApp/latest
+- use the image to construct a container - containers are ephemeral, containers have memory and processer to actually run an application.
+- the LAST thing that docker does when it starts the container is run the CMD or ENTRYPOINT line.
+- if an application exits, (hopefully with exit code 0) it will kill the docker container.
+
+$ docker attach [container name] -i -t
+# if the container/application requires interaction, we can "attach" it to our terminal instance
+
+
+
+# port mapping: -p [internal [in the container] port : external (localhost) port]
+$ docker run -p 80:8080 myApp
+
+
