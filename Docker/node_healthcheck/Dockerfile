@@ -1,10 +1,13 @@
 FROM node:alpine
 
 WORKDIR /usr/src/app
+# pwd: /usr/src/app
 
 COPY package*.json ./
+# /usr/src/app
 
 RUN npm install
+# npm install /usr/src/app
 
 COPY . .
 
@@ -19,7 +22,7 @@ EXPOSE 3000
 
 # HEALTHCHECK NONE
 # HEALTHCHECK CMD curl --fail http://localhost:3000/kill || exit 1
-# HEALTHCHECK --interval=30s --timeout=15s --start-period=45s --retries=3 CMD node healthcheck.js
+HEALTHCHECK --interval=30s --timeout=15s --start-period=45s --retries=3 CMD node healthcheck.js
 
 # Interval - specifies the time between the health check for the application container. it waits for the specified time from one check to another.
 # Timeout - specifies the time that the health check waits for a response to consider the status of the container. For example, if we define 30 seconds and our server doesn’t respond within 30 seconds, then it’s considered as failed.

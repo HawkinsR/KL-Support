@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - target: 5000
+              published: 5000
+              protocol: tcp
+        healthcheck:
+            test: curl --fail http://localhost:5000/ || exit 1
+            interval: 40s
+            timeout: 30s
+            retries: 3
+            start_period: 60s

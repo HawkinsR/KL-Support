@@ -1,0 +1,9 @@
+FROM python:3.9
+
+WORKDIR /app
+
+COPY . .
+
+# update requirements
+
+CMD ["python3", "tic-ac-toe.py"]

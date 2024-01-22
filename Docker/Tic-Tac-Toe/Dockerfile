@@ -4,4 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["python3", "./tic-tac-toe.py"]
+RUN python3 -m venv ./venv
+
+CMD ["venv/bin/python3", "./tic-tac-toe.py"]
